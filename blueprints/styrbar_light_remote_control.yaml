@@ -101,13 +101,6 @@ action:
           - service: light.turn_on
             target:
               entity_id: !input light_entity
-            data:
-              brightness: >
-                {% if state_attr('input.light_entity', 'brightness') == 0 %}
-                  10
-                {% else %}
-                  {{ state_attr('light.light_entity', 'brightness') }}
-                {% endif %}
       - conditions:
           - condition: trigger
             id: light_off
