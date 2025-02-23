@@ -71,8 +71,32 @@ trigger:
     device_id: !input mqtt_device
     domain: mqtt
     type: action
+    subtype: arrow_left_hold
+    id: change_color_left_hold
+  - platform: device
+    device_id: !input mqtt_device
+    domain: mqtt
+    type: action
+    subtype: arrow_left_release
+    id: change_color_left_release
+  - platform: device
+    device_id: !input mqtt_device
+    domain: mqtt
+    type: action
     subtype: arrow_right_click
     id: change_color_right
+  - platform: device
+    device_id: !input mqtt_device
+    domain: mqtt
+    type: action
+    subtype: arrow_right_hold
+    id: change_color_right_hold
+  - platform: device
+    device_id: !input mqtt_device
+    domain: mqtt
+    type: action
+    subtype: arrow_right_release
+    id: change_color_right_release
   - platform: device
     device_id: !input mqtt_device
     domain: mqtt
@@ -91,6 +115,9 @@ trigger:
     type: action
     subtype: brightness_stop
     id: dim_stop
+
+variables:
+  light_entity: !input light_entity
 
 action:
   - choose:
@@ -116,7 +143,23 @@ action:
             target:
               entity_id: !input light_entity
             data:
-              kelvin: 6500
+              color_temp_kelvin: "{{ state_attr(light_entity, 'color_temp_kelvin') - 200 }}"
+      - conditions:
+          - condition: trigger
+            id: change_color_left_hold
+        sequence:
+          - repeat:
+              sequence:
+                - service: light.turn_on
+                  target:
+                    entity_id: !input light_entity
+                  data:
+                    color_temp_kelvin: "{{ state_attr(light_entity, 'color_temp_kelvin') - 100 }}"
+                - delay:
+                    milliseconds: !input delay_ms
+              until:
+                - condition: trigger
+                  id: change_color_left_release
       - conditions:
           - condition: trigger
             id: change_color_right
@@ -125,7 +168,23 @@ action:
             target:
               entity_id: !input light_entity
             data:
-              kelvin: 2000
+              color_temp_kelvin: "{{ state_attr(light_entity, 'color_temp_kelvin') + 200 }}"
+      - conditions:
+          - condition: trigger
+            id: change_color_right_hold
+        sequence:
+          - repeat:
+              sequence:
+                - service: light.turn_on
+                  target:
+                    entity_id: !input light_entity
+                  data:
+                    color_temp_kelvin: "{{ state_attr(light_entity, 'color_temp_kelvin') + 100 }}"
+                - delay:
+                    milliseconds: !input delay_ms
+              until:
+                - condition: trigger
+                  id: change_color_right_release
       - conditions:
           - condition: trigger
             id: dim_down
