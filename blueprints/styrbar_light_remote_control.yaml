@@ -83,32 +83,8 @@ trigger:
     device_id: !input mqtt_device
     domain: mqtt
     type: action
-    subtype: arrow_left_hold
-    id: change_color_left_hold
-  - platform: device
-    device_id: !input mqtt_device
-    domain: mqtt
-    type: action
-    subtype: arrow_left_release
-    id: change_color_left_release
-  - platform: device
-    device_id: !input mqtt_device
-    domain: mqtt
-    type: action
     subtype: arrow_right_click
     id: change_color_right
-  - platform: device
-    device_id: !input mqtt_device
-    domain: mqtt
-    type: action
-    subtype: arrow_right_hold
-    id: change_color_right_hold
-  - platform: device
-    device_id: !input mqtt_device
-    domain: mqtt
-    type: action
-    subtype: arrow_right_release
-    id: change_color_right_release
   - platform: device
     device_id: !input mqtt_device
     domain: mqtt
