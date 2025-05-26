@@ -118,6 +118,7 @@ trigger:
 
 variables:
   light_entity: !input light_entity
+  brightness_step: !input 'brightness_step'
 
 action:
   - choose:
@@ -195,7 +196,7 @@ action:
                   target:
                     entity_id: !input light_entity
                   data:
-                    brightness_step_pct: "-{{ states('input.brightness_step') | int(5) }}"
+                    brightness_step_pct: "-{{ brightness_step | int(5) }}"
                     transition: !input transition_seconds
                 - delay:
                     milliseconds: !input delay_ms
@@ -212,7 +213,7 @@ action:
                   target:
                     entity_id: !input light_entity
                   data:
-                    brightness_step_pct: "{{ states('input.brightness_step') | int(5) }}"
+                    brightness_step_pct: "{{ brightness_step | int(5) }}"
                     transition: !input transition_seconds
                 - delay:
                     milliseconds: !input delay_ms
